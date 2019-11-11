@@ -47,7 +47,7 @@ public class AddHitsServlet extends HttpServlet {
                 if(shooterEntity != null){
                     dataEditor.addHitToShooter(shooterEntity, hits, hitsCount, isStand);
                     JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("hits saved for the new id", shooterEntity.getId());
+                    jsonObject.put("shooterId", shooterEntity.getId()); //hits saved for the new id;
                     sender.sendResponse(resp, jsonObject.toString());
                 }else {
                     sender.sendResponse(resp, "something going wrong");

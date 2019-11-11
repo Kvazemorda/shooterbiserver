@@ -77,15 +77,26 @@ public class DataEditor {
     public boolean addHitToShooter(ShooterEntity shooter, int hits, int shoots, boolean isStand){
         session.clear();
         if(isStand){
-            shooter.setStandHit(shooter.getStandHit() + hits);
-            shooter.setStandShootCount(shooter.getStandShootCount() + shoots);
+            shooter.setStandHit(hits);
+            shooter.setStandShootCount(shoots);
             shooter.setStandStat(shooter.getStandHit() / (double) shooter.getStandShootCount());
         }else {
-            shooter.setLyingHit(shooter.getLyingHit() + hits);
-            shooter.setLyingShootCount(shooter.getLyingShootCount() + shoots);
+            shooter.setLyingHit(hits);
+            shooter.setLyingShootCount(shoots);
             shooter.setLyingStat(shooter.getLyingHit() / (double) shooter.getLyingShootCount());
         }
         shooter.setGeneralStat((shooter.getLyingStat() + shooter.getStandStat())/ 2);
+        updateShooter(shooter);
+
+        return true;
+    }
+
+    public boolean addRegHitToShooter(ShooterEntity shooter, double xHits, double yHits, int countOfRegHits){
+        session.clear();
+
+        shooter.setXHits(xHits);
+        shooter.setYHits(yHits);
+        shooter.setCountOfRegHits(countOfRegHits);
         updateShooter(shooter);
 
         return true;
@@ -114,17 +125,20 @@ public class DataEditor {
     }
 
     public ShooterEntity getTheShooter(long shooterId) {
-        String hql = "select shooter from ShooterEntity shooter " +
-                "where shooter.id = :shooterId";
+        if(shooterId != 0){
+            String hql = "select shooter from ShooterEntity shooter " +
+                    "where shooter.id = :shooterId";
 
-        Query query = session.createQuery(hql);
-        query.setParameter("shooterId", shooterId);
-        if(query.list().size() > 0){
-            return (ShooterEntity) query.list().get(0);
+            Query query = session.createQuery(hql);
+            query.setParameter("shooterId", shooterId);
+            if(query.list().size() > 0){
+                return (ShooterEntity) query.list().get(0);
+            }else {
+                return null;
+            }
         }else {
             return null;
         }
-
     }
 
     /**

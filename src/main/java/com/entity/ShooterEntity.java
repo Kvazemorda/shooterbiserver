@@ -36,6 +36,18 @@ public class ShooterEntity {
     @Column (nullable = true)
     private double generalStat;
 
+    @Basic
+    @Column (nullable = true)
+    private double xHits;
+
+    @Basic
+    @Column (nullable = true)
+    private double yHits;
+
+    @Basic
+    @Column(nullable = true)
+    private int countOfRegHits;
+
     public long getId() {
         return id;
     }
@@ -114,6 +126,30 @@ public class ShooterEntity {
 
     public void setGeneralStat(double generalStat) {
         this.generalStat = generalStat;
+    }
+
+    public double getxHits() {
+        return xHits;
+    }
+
+    public void setXHits(double xHits) {
+        this.xHits = xHits;
+    }
+
+    public int getCountOfRegHits() {
+        return countOfRegHits;
+    }
+
+    public void setCountOfRegHits(int countOfRegHits) {
+        this.countOfRegHits = countOfRegHits;
+    }
+
+    public double getyHits() {
+        return yHits;
+    }
+
+    public void setYHits(double yHits) {
+        this.yHits = yHits;
     }
 
     @Override

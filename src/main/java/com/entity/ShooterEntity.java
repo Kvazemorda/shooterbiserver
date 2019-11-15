@@ -23,15 +23,18 @@ public class ShooterEntity {
     @Basic
     @Column (nullable = true)
     private int standHit;
-    @Basic
-    @Column (nullable = true)
-    double lyingStat;
+
     @Basic
     @Column (nullable = true)
     private int lyingShootCount;
     @Basic
     @Column (nullable = true)
     private int lyingHit;
+
+    @Basic
+    @Column (nullable = true)
+    private double lyingStat;
+
     @Basic
     @Column (nullable = true)
     private double generalStat;
@@ -47,6 +50,29 @@ public class ShooterEntity {
     @Basic
     @Column(nullable = true)
     private int countOfRegHits;
+
+    @Basic
+    @Column (nullable = true)
+    private double registerStat;
+
+
+    public ShooterEntity() {
+    }
+
+    public ShooterEntity(long id, int standShootCount, int standHit, int lyingShootCount, int lyingHit,
+                         double xHits, double yHits, int countOfRegHits, double standStat, double lyingStat, double registerStat) {
+        this.id = id;
+        this.standShootCount = standShootCount;
+        this.standHit = standHit;
+        this.lyingShootCount = lyingShootCount;
+        this.lyingHit = lyingHit;
+        this.xHits = xHits;
+        this.yHits = yHits;
+        this.countOfRegHits = countOfRegHits;
+        this.standStat = standStat;
+        this.lyingStat = lyingStat;
+        this.registerStat = registerStat;
+    }
 
     public long getId() {
         return id;
@@ -150,6 +176,22 @@ public class ShooterEntity {
 
     public void setYHits(double yHits) {
         this.yHits = yHits;
+    }
+
+    public void setxHits(double xHits) {
+        this.xHits = xHits;
+    }
+
+    public void setyHits(double yHits) {
+        this.yHits = yHits;
+    }
+
+    public double getRegisterStat() {
+        return registerStat;
+    }
+
+    public void setRegisterStat(double registerStat) {
+        this.registerStat = registerStat;
     }
 
     @Override

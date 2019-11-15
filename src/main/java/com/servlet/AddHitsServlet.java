@@ -34,25 +34,75 @@ public class AddHitsServlet extends HttpServlet {
         HashMap<String, String> paramsWithValue = reader.readRequest(req);
         String userId = paramsWithValue.get("userid");
         if(userId != null){
-            long shooterId = Long.valueOf(userId);
-            int hits = Integer.valueOf(paramsWithValue.get("hits"));
-            int hitsCount = Integer.valueOf(paramsWithValue.get("hits-count"));
-            boolean isStand = Boolean.valueOf(paramsWithValue.get("isStand"));
-            ShooterEntity shooterEntity = dataEditor.getTheShooter(shooterId);
-            if(shooterEntity != null){
-                dataEditor.addHitToShooter(shooterEntity, hits, hitsCount, isStand);
+            ShooterEntity shooter = createShooterFromRequest(paramsWithValue);
+            if(shooter != null && dataEditor.isShooterExist(shooter.getId())){
+                dataEditor.addHitToShooter(shooter);
                 sender.sendResponse(resp, "hits saved");
             }else {
-                shooterEntity = dataEditor.createTheNewShooter();
-                if(shooterEntity != null){
-                    dataEditor.addHitToShooter(shooterEntity, hits, hitsCount, isStand);
+                //если не найден ID из запроса, то создаем новый
+                ShooterEntity shooterNew = dataEditor.createTheNewShooter();
+                //обновляем ID у стрелка полученного из запроса, на новый созданный в базе
+                shooter.setId(shooterNew.getId());
+                if(shooter != null){
+                    dataEditor.addHitToShooter(shooter);
                     JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("shooterId", shooterEntity.getId()); //hits saved for the new id;
+                    jsonObject.put("shooterId", shooter.getId()); //hits saved for the new id;
                     sender.sendResponse(resp, jsonObject.toString());
                 }else {
                     sender.sendResponse(resp, "something going wrong");
                 }
             }
         }
+    }
+
+    private ShooterEntity createShooterFromRequest(HashMap<String, String> paramsWithValue) {
+        String hitsLyingParamName = "hitsLying";
+        int hitsLying = Integer.valueOf(paramsWithValue.get(hitsLyingParamName));
+
+        String shootCountLyingParamName = "hitsCountLying";
+        int shootCountLying = Integer.valueOf(paramsWithValue.get(shootCountLyingParamName));
+
+        String hitsStandParamName = "hitsStand";
+        int hitsStand = Integer.valueOf(paramsWithValue.get(hitsStandParamName));
+
+        String shootCountStandParamName = "hitsCountStand";
+        int shootCountStand = Integer.valueOf(paramsWithValue.get(shootCountStandParamName));
+
+        String  lyingStatParamName = "lyingStat";
+        double lyingStat = Double.valueOf(paramsWithValue.get(lyingStatParamName));
+
+        String  standStatParamName = "standStat";
+        double standStat = Double.valueOf(paramsWithValue.get(standStatParamName));
+
+        String hitsXParamName = "hitsX";
+        double hitsX = Double.valueOf(paramsWithValue.get(hitsXParamName));
+
+        String hitsYParamName = "hitsY";
+        double hitsY = Double.valueOf(paramsWithValue.get(hitsYParamName));
+
+        String shootCountRegisterParamName = "hitsCountRegister";
+        int shootCountRegister = Integer.valueOf(paramsWithValue.get(shootCountRegisterParamName));
+
+        String registerStatParamName = "registerStat";
+        double registerStat = Double.valueOf(paramsWithValue.get(registerStatParamName));
+
+        String shooterIdParamName = "userid";
+        long userId = Long.valueOf(paramsWithValue.get(shooterIdParamName));
+
+        ShooterEntity shooter = new ShooterEntity(
+                userId,
+                shootCountStand,
+                hitsStand,
+                shootCountLying,
+                hitsLying,
+                hitsX,
+                hitsY,
+                shootCountRegister,
+                standStat,
+                lyingStat,
+                registerStat
+        );
+
+        return shooter;
     }
 }

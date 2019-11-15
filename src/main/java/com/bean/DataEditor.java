@@ -68,23 +68,11 @@ public class DataEditor {
     /**
      * Метод добавляет стрелку кол-во выстрелов и кол-во попаданий.
      * Если юзер не найден, то добавляет юзера в базу и добавляет выстрелы
-     * @param shooter id стрелка, которому добавятся выстрелы
-     * @param hits попадания
-     * @param shoots кол-во выстрелов
-     * @param isStand стрельба стоя
-     * @return возвращает успешность добавления
+     * @param shooter Cтрелка, которому добавятся выстрелы
+
      */
-    public boolean addHitToShooter(ShooterEntity shooter, int hits, int shoots, boolean isStand){
+    public boolean addHitToShooter(ShooterEntity shooter){
         session.clear();
-        if(isStand){
-            shooter.setStandHit(hits);
-            shooter.setStandShootCount(shoots);
-            shooter.setStandStat(shooter.getStandHit() / (double) shooter.getStandShootCount());
-        }else {
-            shooter.setLyingHit(hits);
-            shooter.setLyingShootCount(shoots);
-            shooter.setLyingStat(shooter.getLyingHit() / (double) shooter.getLyingShootCount());
-        }
         shooter.setGeneralStat((shooter.getLyingStat() + shooter.getStandStat())/ 2);
         updateShooter(shooter);
 
@@ -146,9 +134,9 @@ public class DataEditor {
      * @param shooterId
      * @return
      */
-    public ArrayList<ShooterEntity> tenOfBetterThenShooter(long shooterId){
+    public ArrayList<ShooterEntity> tenOfBetterRegisterThenTheShooter(long shooterId){
 
-        String hql = "select shooter from ShooterEntity shooter order by shooter.generalStat desc";
+        String hql = "select shooter from ShooterEntity shooter order by shooter.registerStat desc";
         Query query = session.createQuery(hql);
         ArrayList<ShooterEntity> listOfAllShooters = (ArrayList<ShooterEntity>) query.list();
         int indexShooter = listOfAllShooters.lastIndexOf(getTheShooter(shooterId));

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-@WebServlet("better-ten-statistic")
+@WebServlet("better-ten-register")
 public class GetBetterShooterServlet extends HttpServlet{
 
     @EJB DataEditor dataEditor;
@@ -36,7 +36,7 @@ public class GetBetterShooterServlet extends HttpServlet{
         if(shooterId != null){
             long id = Long.valueOf(shooterId);
             if(dataEditor.isShooterExist(id)){
-                prepareJsonShooterData(dataEditor.tenOfBetterThenShooter(id), resp);
+                prepareJsonShooterData(dataEditor.tenOfBetterRegisterThenTheShooter(id), resp);
             }else {
                 sender.sendResponse(resp, "no data");
             }
@@ -59,7 +59,7 @@ public class GetBetterShooterServlet extends HttpServlet{
             }else {
                 jsonObject.put("name", "shooter-" + shooter.getId());
             }
-            jsonObject.put("stat", shooter.getGeneralStat());
+            jsonObject.put("stat", shooter.getRegisterStat());
             jsonArray.put(jsonObject);
         }
         JSONObject fullObject = new JSONObject();
